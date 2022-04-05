@@ -1,0 +1,38 @@
+Options +FollowSymlinks
+RewriteEngine on
+
+#DIRECCIONAR SIEMPRE A WWW
+#RewriteCond %{HTTP_HOST} ^aconpy.com [NC]
+#RewriteRule ^(.*)$ https://www.aconpy.com/$1 [L,R=301]
+RewriteCond %{HTTP_HOST} ^ayuda\.aconpy\.com [NC]
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+#redicciona el www a https
+#RewriteCond %{SERVER_PORT} 80
+#RewriteCond %{HTTP_HOST} ^(.+\.)?aconpy\.com$
+#RewriteRule ^(.*)$ https://%1aconpy\.com/$1 [R,L]
+#DIRECCIONAR SIEMPRE A WWW - FIN
+
+RewriteCond %{REQUEST_FILENAME} =-f
+RewriteRule ^(.*)\.php$ $1.html [L,QSA]
+RewriteRule ^(.*)\.html$  $1.php [L,QSA]
+
+RewriteRule ^login.html index.php?controller=acceso_comercios&execute_action=login [L,NC]
+RewriteRule ^logout.html$ index.php?section=logout [L,NC]
+RewriteRule ^session_expire.html index.php?error=session_expire&section=home&panel=login [L,NC]
+RewriteRule ^(.*).html$ index.php?section=home&panel=$1 [L,QSA]
+ErrorDocument 403 ./index.php?section=403
+ErrorDocument 404 /404.html
+ErrorDocument 500 ./index.php?section=500
+
+#ErrorDocument 404 /404.html
+#ErrorDocument 500 /404.html
+
+
+
+# DO NOT REMOVE THIS LINE AND THE LINES BELLOW SSL_REDIRECT:ayuda.aconpy.com
+RewriteEngine on
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP_HOST} (www\.)?ayuda.aconpy.com
+RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+# DO NOT REMOVE THIS LINE AND THE LINES BELLOW SSL_REDIRECT:ayuda.aconpy.com
